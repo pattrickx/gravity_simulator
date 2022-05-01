@@ -2,18 +2,18 @@ import pygame
 import numpy as np
 
 class body:
-    def __init__(self,screen,pos,radius,screen_width,screen_height, vel=[],gravity = 50) -> None:
+    def __init__(self,screen,pos,mass,screen_width,screen_height, vel=[],gravity = 50) -> None:
         self.screen = screen
         self.pos = np.array(pos,dtype=float)
-        self.radius = radius
-        self.mass = radius
+        self.radius = mass/2
+        self.mass = mass
         self.acc = np.array([0,0],dtype=float)
         self.vel = vel if len(vel)>0 else np.random.uniform(-0.8, 0.8, 2)
         self.gravity = gravity
         self.screen_width = screen_width
         self.screen_height = screen_height
         self.color = [255,255,255,100]
-        self.max_pos = 20
+        self.max_pos = 100
         self.past =[]
         
 

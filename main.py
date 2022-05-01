@@ -10,8 +10,8 @@ screen = pygame.display.set_mode(size)
 clock = pygame.time.Clock()
 gravity = 1
 min_size=2
-max_size=10
-n_bodys = 5
+max_size=20
+n_bodys =20
 
 bodys = []
 for i in range(n_bodys):
@@ -22,7 +22,7 @@ for i in range(n_bodys):
 # bodys[0].radius=10
 
 
-bodys.append(body(screen,[400,400],50,width, height,gravity=gravity,vel=np.array([0.0,0.0])))
+bodys.append(body(screen,[400,400],100,width, height,gravity=gravity,vel=np.array([0.0,0.0])))
 bodys[-1].radius=3
 bodys[-1].color=[255,0,0,200]
 
