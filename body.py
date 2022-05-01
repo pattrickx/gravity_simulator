@@ -8,11 +8,14 @@ class body:
         self.radius = radius
         self.mass = radius
         self.acc = np.array([0,0],dtype=float)
-        self.vel = vel if len(vel)>0 else np.random.uniform(-0.1, 0.1, 2)
+        self.vel = vel if len(vel)>0 else np.random.uniform(-0.8, 0.8, 2)
         self.gravity = gravity
         self.screen_width = screen_width
         self.screen_height = screen_height
-        self.color = (255,255,255,100)
+        self.color = [255,255,255,100]
+        self.max_pos = 20
+        self.past =[]
+        
 
     def magnitude(self,vector): 
         return np.linalg.norm(vector)
@@ -22,6 +25,9 @@ class body:
         arr[1] = arr[1] * new_mag / mag
 
     def move(self):
+        if self.max_pos<len(self.past):
+            self.past.pop(0)
+        self.past.append(self.pos.copy())
         self.vel[0] += self.acc[0]
         self.vel[1] += self.acc[1]
 
@@ -30,7 +36,7 @@ class body:
         #         self.pos[0] = self.radius
         #     else: 
         #         self.pos[0] = self.screen_width-self.radius
-        #     self.vel[0] = 0.8*self.vel[0]* -1
+        #     self.vel[0] = 0.9*self.vel[0]* -1
         #     # self.acc[0] =0.0
 
         # if self.pos[1]-self.radius<0 or self.pos[1]+self.radius>=self.screen_height:
@@ -38,17 +44,30 @@ class body:
         #         self.pos[1] = self.radius
         #     else: 
         #         self.pos[1] = self.screen_height-self.radius
-        #     self.vel[1] =0.8*self.vel[1]* -1
-        #     # self.acc[1] =0.0
+        #     self.vel[1] =0.9*self.vel[1]* -1
+            # self.acc[1] =0.0
 
         self.pos[0] += self.vel[0]
         self.pos[1] += self.vel[1]
-
-    def draw(self):
+        
+    def draw_past(self):
+        color = self.color.copy()
+        sub = int(255/self.max_pos)
+        for pos in reversed(self.past):
+            if color[3]>sub:
+                color[3]-=sub
+            target_rect = pygame.Rect(pos, (0, 0)).inflate((self.radius * 2, self.radius * 2))
+            shape_surf = pygame.Surface(target_rect.size, pygame.SRCALPHA)
+            pygame.draw.circle(shape_surf,color,(self.radius,self.radius),self.radius)
+            self.screen.blit(shape_surf, target_rect)
+    def draw(self,past=False):
         target_rect = pygame.Rect(self.pos, (0, 0)).inflate((self.radius * 2, self.radius * 2))
         shape_surf = pygame.Surface(target_rect.size, pygame.SRCALPHA)
         pygame.draw.circle(shape_surf,self.color,(self.radius,self.radius),self.radius)
         self.screen.blit(shape_surf, target_rect)
+        if past:
+            self.draw_past()
+
     def constrain(self,value,min,max):
         if value<min:
             return min
