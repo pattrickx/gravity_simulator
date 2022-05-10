@@ -1,5 +1,6 @@
 # gravity_simulator
 
+Project created with the objective of demonstrating physical reactions between bodies
 
 # Interesting results
 
